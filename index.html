@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="GTA-Style Radio Web App — tune into virtual radio stations with a cinematic dial interface." />
+  <title>GTA Radio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- Ambient Background -->
+  <div id="app-background" class="app-background">
+    <div class="bg-grain"></div>
+    <div class="bg-glow"></div>
+  </div>
+
+  <!-- ===== CLICK-TO-START OVERLAY ===== -->
+  <div id="start-overlay" class="start-overlay">
+    <div class="overlay-content">
+      <div class="overlay-logo">
+        <span class="logo-gta">GTA</span>
+        <span class="logo-radio">RADIO</span>
+      </div>
+      <p class="overlay-text">Loading stations...</p>
+      <div class="overlay-pulse"></div>
+    </div>
+  </div>
+
+  <!-- ===== STATION WHEEL (HUD) ===== -->
+  <div id="station-wheel" class="station-wheel">
+    <div class="wheel-center-dot"></div>
+    <!-- wheel-ring is injected by stationWheel.js -->
+  </div>
+
+  <!-- ===== DIAL DRAG AREA ===== -->
+  <div id="dial-area" class="dial-area">
+    <div class="dial-knob">
+      <div class="dial-tick"></div>
+      <div class="dial-label">TUNE</div>
+    </div>
+  </div>
+
+  <!-- ===== NOW PLAYING CARD ===== -->
+  <div id="now-playing" class="now-playing">
+    <div class="np-accent-bar"></div>
+    <div class="np-content">
+      <span class="np-icon"></span>
+      <div class="np-text">
+        <span class="np-station-name"></span>
+        <span class="np-track-name"></span>
+        <span class="np-genre"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== STATION LIST (ambient) ===== -->
+  <div id="station-list" class="station-list"></div>
+
+  <!-- ===== CONTROLS HINT ===== -->
+  <div class="controls-hint">
+    <span>Scroll · Arrow Keys · 1–5 · Drag Dial</span>
+  </div>
+
+  <script type="module" src="src/main.js"></script>
+</body>
+</html>

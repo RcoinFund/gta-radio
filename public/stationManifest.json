@@ -1,0 +1,55 @@
+{
+  "epoch": "2026-01-01T00:00:00Z",
+  "stations": [
+    {
+      "id": "los-santos-rock",
+      "name": "Los Santos Rock Radio",
+      "track": "Black Sabbath — War Pigs",
+      "genre": "Classic Rock",
+      "file": "audio/war_pigs.m4a",
+      "duration": 490,
+      "color": "#e74c3c",
+      "icon": "🎸"
+    },
+    {
+      "id": "stark-fm",
+      "name": "Stark Industries FM",
+      "track": "Epic Music Mix of Iron Man",
+      "genre": "Cinematic / Epic",
+      "file": "audio/iron_man.m4a",
+      "duration": 1440,
+      "color": "#f39c12",
+      "icon": "🎬"
+    },
+    {
+      "id": "ls-underground",
+      "name": "LS Underground Radio",
+      "track": "Warriors Dance — The Prodigy",
+      "genre": "Electronic",
+      "file": "audio/warriors_dance.m4a",
+      "duration": 340,
+      "color": "#00e5ff",
+      "icon": "⚡"
+    },
+    {
+      "id": "blaine-county",
+      "name": "Blaine County Radio",
+      "track": "Hot Together",
+      "genre": "Pop / Synth",
+      "file": "audio/hot_together.m4a",
+      "duration": 325,
+      "color": "#e040fb",
+      "icon": "💜"
+    },
+    {
+      "id": "radio-los-santos",
+      "name": "Radio Los Santos",
+      "track": "Welcome to Los Santos",
+      "genre": "Theme / Ambient",
+      "file": "audio/welcome_los_santos.m4a",
+      "duration": 228,
+      "color": "#76ff03",
+      "icon": "🌴"
+    }
+  ]
+}

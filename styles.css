@@ -1,0 +1,527 @@
+/* ============================================================
+   GTA RADIO — Premium Dark Theme Design System
+   Inspired by GTA V's in-game radio HUD
+   ============================================================ */
+
+/* ── Reset & Base ───────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  /* Core palette */
+  --bg-primary: #0a0a0f;
+  --bg-secondary: #12121c;
+  --bg-card: rgba(18, 18, 30, 0.85);
+  --text-primary: #f0f0f5;
+  --text-secondary: rgba(240, 240, 245, 0.55);
+  --text-muted: rgba(240, 240, 245, 0.3);
+
+  /* Station accent (overridden per station) */
+  --active-color: #00e5ff;
+  --accent-color: #00e5ff;
+
+  /* Glassmorphism */
+  --glass-bg: rgba(255, 255, 255, 0.04);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-blur: 24px;
+
+  /* Sizing */
+  --wheel-size: 340px;
+  --dial-size: 80px;
+
+  /* Typography */
+  font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+  font-size: 16px;
+  color: var(--text-primary);
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Ambient Background ────────────────────────────────────── */
+.app-background {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background: var(--bg-primary);
+  transition: --active-color 0.8s ease;
+}
+
+.bg-glow {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 50% 110%, var(--active-color), transparent 70%),
+    radial-gradient(ellipse 40% 30% at 80% 20%, rgba(100, 60, 255, 0.08), transparent);
+  opacity: 0.18;
+  transition: background 1s ease;
+  pointer-events: none;
+}
+
+.bg-grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 128px;
+  pointer-events: none;
+}
+
+/* ── Start Overlay ─────────────────────────────────────────── */
+.start-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-primary);
+  cursor: default;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+
+.start-overlay.is-ready {
+  cursor: pointer;
+}
+
+.start-overlay.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.overlay-content {
+  text-align: center;
+  position: relative;
+}
+
+.overlay-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  margin-bottom: 32px;
+}
+
+.logo-gta {
+  font-size: 72px;
+  font-weight: 900;
+  letter-spacing: 12px;
+  line-height: 1;
+  background: linear-gradient(180deg, #ffffff 0%, #a0a0b0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: none;
+}
+
+.logo-radio {
+  font-size: 24px;
+  font-weight: 300;
+  letter-spacing: 18px;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.overlay-text {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text-secondary);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  animation: textPulse 2s ease-in-out infinite;
+}
+
+.overlay-pulse {
+  position: absolute;
+  bottom: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 60px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  animation: pulseRing 2s ease-out infinite;
+}
+
+.start-overlay.is-ready .overlay-pulse {
+  border-color: rgba(0, 229, 255, 0.3);
+}
+
+@keyframes textPulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+@keyframes pulseRing {
+  0% { transform: translateX(-50%) scale(0.8); opacity: 1; }
+  100% { transform: translateX(-50%) scale(2); opacity: 0; }
+}
+
+/* ── Station Wheel (HUD) ──────────────────────────────────── */
+.station-wheel {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: var(--wheel-size);
+  height: var(--wheel-size);
+  z-index: 100;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.station-wheel.is-visible {
+  opacity: 1;
+}
+
+.wheel-center-dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  background: var(--text-primary);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+  z-index: 2;
+}
+
+.wheel-ring {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+
+.wheel-station {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  /* JS sets transform: translate(Xpx, Ypx) */
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  opacity: 0.35;
+  transition: opacity 0.3s ease;
+  /* Offset so the label is centered on its computed point */
+  margin-top: -12px;
+  margin-left: -10px;
+}
+
+.wheel-station.is-active {
+  opacity: 1;
+  filter: drop-shadow(0 0 12px var(--station-color));
+}
+
+.wheel-station-icon {
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.wheel-station-name {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+
+.wheel-station.is-active .wheel-station-name {
+  color: var(--station-color);
+}
+
+/* ── Dial / Drag Area ──────────────────────────────────────── */
+.dial-area {
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  cursor: grab;
+}
+
+.dial-area:active {
+  cursor: grabbing;
+}
+
+.dial-knob {
+  width: var(--dial-size);
+  height: var(--dial-size);
+  border-radius: 50%;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dial-knob:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 30px rgba(0, 229, 255, 0.08);
+}
+
+.dial-area.is-dragging .dial-knob {
+  border-color: var(--active-color);
+  box-shadow: 0 0 40px rgba(0, 229, 255, 0.15);
+}
+
+.dial-tick {
+  width: 2px;
+  height: 14px;
+  background: var(--text-secondary);
+  border-radius: 1px;
+  margin-bottom: 4px;
+  transition: background 0.3s ease;
+}
+
+.dial-area.is-dragging .dial-tick {
+  background: var(--active-color);
+}
+
+.dial-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+/* ── Now Playing Card ──────────────────────────────────────── */
+.now-playing {
+  position: fixed;
+  bottom: 40px;
+  right: -400px;
+  z-index: 80;
+  width: 320px;
+  background: var(--bg-card);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  overflow: hidden;
+  transition: right 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.now-playing.is-visible {
+  right: 32px;
+}
+
+.np-accent-bar {
+  height: 3px;
+  background: var(--accent-color);
+  box-shadow: 0 0 16px var(--accent-color);
+  transition: background 0.5s ease, box-shadow 0.5s ease;
+}
+
+.np-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 20px;
+}
+
+.np-icon {
+  font-size: 32px;
+  flex-shrink: 0;
+}
+
+.np-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.np-station-name {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.np-track-name {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.np-genre {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--accent-color);
+  transition: color 0.5s ease;
+}
+
+/* ── Station List (Side Panel) ─────────────────────────────── */
+.station-list {
+  position: fixed;
+  top: 50%;
+  left: 32px;
+  transform: translateY(-50%);
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.station-list-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid transparent;
+  transition: background 0.25s ease, border-color 0.25s ease, transform 0.2s ease;
+}
+
+.station-list-item:hover {
+  background: var(--glass-bg);
+  border-color: var(--glass-border);
+  transform: translateX(4px);
+}
+
+.station-list-item.is-active {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.sl-icon {
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.sl-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sl-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: 0.3px;
+}
+
+.station-list-item.is-active .sl-name {
+  color: var(--active-color);
+}
+
+.sl-track {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+/* ── Controls Hint ─────────────────────────────────────────── */
+.controls-hint {
+  position: fixed;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 2px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+/* ── Keyframes ─────────────────────────────────────────────── */
+@keyframes slideInRight {
+  from { transform: translateX(100px); opacity: 0; }
+  to   { transform: translateX(0);     opacity: 1; }
+}
+
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 15px rgba(0, 229, 255, 0.1); }
+  50%      { box-shadow: 0 0 30px rgba(0, 229, 255, 0.25); }
+}
+
+@keyframes staticFlicker {
+  0%   { opacity: 0.03; }
+  20%  { opacity: 0.06; }
+  40%  { opacity: 0.02; }
+  60%  { opacity: 0.08; }
+  80%  { opacity: 0.03; }
+  100% { opacity: 0.05; }
+}
+
+/* ── Responsive ────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  :root {
+    --wheel-size: 260px;
+    --dial-size: 64px;
+  }
+
+  .station-list {
+    display: none;
+  }
+
+  .now-playing {
+    width: 280px;
+    bottom: 20px;
+  }
+
+  .now-playing.is-visible {
+    right: 16px;
+  }
+
+  .logo-gta {
+    font-size: 48px;
+    letter-spacing: 8px;
+  }
+
+  .logo-radio {
+    font-size: 16px;
+    letter-spacing: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --wheel-size: 200px;
+  }
+
+  .now-playing {
+    width: calc(100vw - 32px);
+    left: 16px;
+    right: auto;
+  }
+
+  .now-playing.is-visible {
+    right: auto;
+  }
+
+  .controls-hint {
+    display: none;
+  }
+}
