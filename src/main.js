@@ -169,8 +169,8 @@ function updateBackground(index) {
   const station = getStation(index);
   if (!station) return;
 
-  // Set color globally on root so all components (volume, list, wheel) can use it
-  document.documentElement.style.setProperty('--active-color', station.color);
+  // Set theme color globally on root so themed HUD elements can use it
+  document.documentElement.style.setProperty('--station-theme-color', station.color);
 }
 
 /**

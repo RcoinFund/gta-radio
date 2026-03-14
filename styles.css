@@ -62,7 +62,7 @@ body {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 60% 50% at 50% 110%, var(--active-color), transparent 70%),
+    radial-gradient(ellipse 60% 50% at 50% 110%, var(--station-theme-color, var(--active-color)), transparent 70%),
     radial-gradient(ellipse 40% 30% at 80% 20%, rgba(100, 60, 255, 0.08), transparent);
   opacity: 0.18;
   transition: background 1s ease;
@@ -341,8 +341,8 @@ body {
 
 .np-accent-bar {
   height: 3px;
-  background: var(--accent-color);
-  box-shadow: 0 0 16px var(--accent-color);
+  background: var(--station-theme-color, var(--accent-color));
+  box-shadow: 0 0 16px var(--station-theme-color, var(--accent-color));
   transition: background 0.5s ease, box-shadow 0.5s ease;
 }
 
@@ -389,7 +389,7 @@ body {
   font-weight: 500;
   letter-spacing: 1.5px;
   text-transform: uppercase;
-  color: var(--accent-color);
+  color: var(--station-theme-color, var(--accent-color));
   transition: color 0.5s ease;
 }
 
@@ -498,9 +498,9 @@ body {
 
 .volume-icon {
   font-size: 14px;
-  color: var(--active-color);
+  color: var(--station-theme-color, var(--active-color));
   transition: color 0.4s ease;
-  filter: drop-shadow(0 0 5px var(--active-color));
+  filter: drop-shadow(0 0 5px var(--station-theme-color, var(--active-color)));
 }
 
 /* Custom Range Styling */
@@ -518,7 +518,7 @@ body {
 #volume-slider::-webkit-slider-runnable-track {
   width: 100%;
   height: 3px;
-  background: linear-gradient(to right, var(--active-color) 0%, var(--active-color) var(--volume-percent, 100%), rgba(255, 255, 255, 0.1) var(--volume-percent, 100%));
+  background: linear-gradient(to right, var(--station-theme-color, var(--active-color)) 0%, var(--station-theme-color, var(--active-color)) var(--volume-percent, 100%), rgba(255, 255, 255, 0.1) var(--volume-percent, 100%));
   border-radius: 2px;
   transition: background 0.4s ease;
 }
@@ -528,16 +528,16 @@ body {
   appearance: none;
   width: 12px;
   height: 12px;
-  background: var(--active-color);
+  background: var(--station-theme-color, var(--active-color));
   border-radius: 50%;
   margin-top: -4.5px;
-  box-shadow: 0 0 10px var(--active-color);
+  box-shadow: 0 0 10px var(--station-theme-color, var(--active-color));
   transition: transform 0.2s ease, background 0.4s ease, box-shadow 0.4s ease;
 }
 
 #volume-slider:hover::-webkit-slider-thumb {
   transform: scale(1.2);
-  box-shadow: 0 0 15px var(--active-color);
+  box-shadow: 0 0 15px var(--station-theme-color, var(--active-color));
 }
 
 #volume-slider::-moz-range-track {
@@ -548,7 +548,7 @@ body {
 }
 
 #volume-slider::-moz-range-progress {
-  background: var(--active-color);
+  background: var(--station-theme-color, var(--active-color));
   height: 3px;
   border-radius: 2px;
   transition: background 0.4s ease;
@@ -557,16 +557,16 @@ body {
 #volume-slider::-moz-range-thumb {
   width: 12px;
   height: 12px;
-  background: var(--active-color);
+  background: var(--station-theme-color, var(--active-color));
   border-radius: 50%;
   border: none;
-  box-shadow: 0 0 10px var(--active-color);
+  box-shadow: 0 0 10px var(--station-theme-color, var(--active-color));
   transition: transform 0.2s ease, background 0.4s ease, box-shadow 0.4s ease;
 }
 
 #volume-slider:hover::-moz-range-thumb {
   transform: scale(1.2);
-  box-shadow: 0 0 15px var(--active-color);
+  box-shadow: 0 0 15px var(--station-theme-color, var(--active-color));
 }
 
 /* ── Keyframes ─────────────────────────────────────────────── */
