@@ -169,10 +169,8 @@ function updateBackground(index) {
   const station = getStation(index);
   if (!station) return;
 
-  const bg = document.getElementById('app-background');
-  if (bg) {
-    bg.style.setProperty('--active-color', station.color);
-  }
+  // Set color globally on root so all components (volume, list, wheel) can use it
+  document.documentElement.style.setProperty('--active-color', station.color);
 }
 
 /**
