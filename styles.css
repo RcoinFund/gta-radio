@@ -442,18 +442,12 @@ html, body {
 }
 
 /* ── Controls Hint & Volume ────────────────────────────────── */
-.hud-bottom-right {
+.controls-hint {
   position: fixed;
   bottom: 12px;
-  right: 32px;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 20;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 16px;
-}
-
-.controls-hint {
   font-size: 10px;
   font-weight: 400;
   letter-spacing: 2px;
@@ -463,6 +457,10 @@ html, body {
 }
 
 .volume-control {
+  position: fixed;
+  bottom: 32px;
+  left: 32px;
+  z-index: 20;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -472,7 +470,13 @@ html, body {
   -webkit-backdrop-filter: blur(var(--glass-blur));
   padding: 8px 16px;
   border-radius: 20px;
+  opacity: 0.35;
   transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.volume-control:hover,
+.volume-control.is-active {
+  opacity: 1;
 }
 
 .volume-icon {

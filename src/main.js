@@ -86,6 +86,12 @@ function initVolumeControl() {
     setVolume(val);
     updateSliderProgress(slider);
   });
+
+  // Handle active class for opacity while dragging
+  slider.addEventListener('mousedown', () => slider.parentElement.classList.add('is-active'));
+  slider.addEventListener('mouseup', () => slider.parentElement.classList.remove('is-active'));
+  slider.addEventListener('touchstart', () => slider.parentElement.classList.add('is-active'));
+  slider.addEventListener('touchend', () => slider.parentElement.classList.remove('is-active'));
 }
 
 /**
