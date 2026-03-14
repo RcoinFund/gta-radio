@@ -409,13 +409,21 @@ html, body {
 }
 
 .station-list-item.is-active {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
+  transform: translateX(8px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
 .sl-icon {
   font-size: 20px;
   flex-shrink: 0;
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.station-list-item.is-active .sl-icon {
+  transform: scale(1.15);
+  filter: drop-shadow(0 0 8px var(--station-color));
 }
 
 .sl-info {
@@ -426,13 +434,15 @@ html, body {
 
 .sl-name {
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--text-primary);
   letter-spacing: 0.3px;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
 }
 
 .station-list-item.is-active .sl-name {
-  color: var(--active-color);
+  color: var(--station-color);
+  text-shadow: 0 0 10px var(--station-color);
 }
 
 .sl-track {
