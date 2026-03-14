@@ -441,18 +441,107 @@ html, body {
   font-weight: 400;
 }
 
-/* ── Controls Hint ─────────────────────────────────────────── */
-.controls-hint {
+/* ── Controls Hint & Volume ────────────────────────────────── */
+.hud-bottom-right {
   position: fixed;
   bottom: 12px;
-  left: 50%;
-  transform: translateX(-50%);
+  right: 32px;
   z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 16px;
+}
+
+.controls-hint {
   font-size: 10px;
   font-weight: 400;
   letter-spacing: 2px;
   color: var(--text-muted);
   text-transform: uppercase;
+  pointer-events: none;
+}
+
+.volume-control {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  padding: 8px 16px;
+  border-radius: 20px;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.volume-icon {
+  font-size: 14px;
+  opacity: 0.6;
+}
+
+/* Custom Range Styling */
+#volume-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100px;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+
+#volume-slider::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(to right, var(--active-color) 0%, var(--active-color) var(--volume-percent, 100%), rgba(255, 255, 255, 0.1) var(--volume-percent, 100%));
+  border-radius: 2px;
+}
+
+#volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  background: var(--text-primary);
+  border-radius: 50%;
+  margin-top: -4.5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+#volume-slider:hover::-webkit-slider-thumb {
+  transform: scale(1.2);
+  background: var(--active-color);
+}
+
+#volume-slider::-moz-range-track {
+  width: 100%;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+}
+
+#volume-slider::-moz-range-progress {
+  background: var(--active-color);
+  height: 3px;
+  border-radius: 2px;
+}
+
+#volume-slider::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  background: var(--text-primary);
+  border-radius: 50%;
+  border: none;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+#volume-slider:hover::-moz-range-thumb {
+  transform: scale(1.2);
+  background: var(--active-color);
 }
 
 /* ── Keyframes ─────────────────────────────────────────────── */

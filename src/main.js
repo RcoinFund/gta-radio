@@ -4,7 +4,7 @@
  */
 
 import { loadManifest, getStation, getStationCount, wrapIndex } from './radioEngine.js';
-import { initAudio, changeStation, getCurrentStationIndex, resumeAudioContext } from './audioTransition.js';
+import { initAudio, changeStation, getCurrentStationIndex, resumeAudioContext, setVolume, getVolume } from './audioTransition.js';
 import { initInput } from './inputController.js';
 import { initWheel, showWheel } from './stationWheel.js';
 import { initNowPlaying, showNowPlaying } from './nowPlaying.js';
@@ -59,12 +59,41 @@ async function handleFirstInteraction() {
   const dialElement = document.getElementById('dial-area');
   initInput(handleStationChange, dialElement);
 
+  // Init volume slider
+  initVolumeControl();
+
   // Play first station
   currentIndex = 0;
   await tuneToStation(currentIndex, true);
 
   // Set up the background animation
   updateBackground(currentIndex);
+}
+
+/**
+ * Initialize the volume control UI and link it to the audio engine.
+ */
+function initVolumeControl() {
+  const slider = document.getElementById('volume-slider');
+  if (!slider) return;
+
+  // Set initial value from engine
+  slider.value = getVolume();
+  updateSliderProgress(slider);
+
+  slider.addEventListener('input', (e) => {
+    const val = parseFloat(e.target.value);
+    setVolume(val);
+    updateSliderProgress(slider);
+  });
+}
+
+/**
+ * Update the CSS variable for the custom slider track progress appearance.
+ */
+function updateSliderProgress(slider) {
+  const percent = slider.value * 100;
+  slider.style.setProperty('--volume-percent', `${percent}%`);
 }
 
 /**

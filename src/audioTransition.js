@@ -13,6 +13,7 @@ let mainGain = null;          // GainNode for smooth fading
 let staticBuffer = null;      // Pre-generated static burst buffer
 let isTransitioning = false;
 let currentStationIndex = -1;
+let userVolume = 1.0;          // Persisted user volume setting
 
 /**
  * Initialize the audio system. Must be called from a user gesture.
@@ -49,6 +50,25 @@ export async function resumeAudioContext() {
   if (audioCtx && audioCtx.state === 'suspended') {
     await audioCtx.resume();
   }
+}
+
+/**
+ * Set the user's desired radio volume (0 to 1).
+ */
+export function setVolume(value) {
+  userVolume = Math.max(0, Math.min(1, value));
+  if (mainGain) {
+    const now = audioCtx.currentTime;
+    mainGain.gain.cancelScheduledValues(now);
+    mainGain.gain.setTargetAtTime(userVolume, now, 0.05);
+  }
+}
+
+/**
+ * Get the current volume level.
+ */
+export function getVolume() {
+  return userVolume;
 }
 
 /**
@@ -186,7 +206,7 @@ export async function changeStation(newIndex, instant = false) {
 
     // Fade in volume
     const fadeTime = instant ? 100 : 400;
-    await rampGain(mainGain, 1, fadeTime);
+    await rampGain(mainGain, userVolume, fadeTime);
 
     return true;
   } catch (err) {

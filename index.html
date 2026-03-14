@@ -60,9 +60,15 @@
   <!-- ===== STATION LIST (ambient) ===== -->
   <div id="station-list" class="station-list"></div>
 
-  <!-- ===== CONTROLS HINT ===== -->
-  <div class="controls-hint">
-    <span>Scroll · Arrow Keys · 1–5 · Drag Dial</span>
+  <!-- ===== CONTROLS HINT & VOLUME ===== -->
+  <div class="hud-bottom-right">
+    <div id="volume-control" class="volume-control">
+      <span class="volume-icon">🔊</span>
+      <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="1" />
+    </div>
+    <div class="controls-hint">
+      <span>Scroll · Arrow Keys · 1–5 · Drag Dial</span>
+    </div>
   </div>
 
   <script type="module" src="src/main.js"></script>
