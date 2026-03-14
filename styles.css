@@ -464,24 +464,28 @@ html, body {
   display: flex;
   align-items: center;
   gap: 12px;
-  background: var(--glass-bg);
+  background: rgba(0, 0, 0, 0.4);
   border: 1px solid var(--glass-border);
   backdrop-filter: blur(var(--glass-blur));
   -webkit-backdrop-filter: blur(var(--glass-blur));
   padding: 8px 16px;
   border-radius: 20px;
   opacity: 0.35;
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition: opacity 0.3s ease, background 0.3s ease, border-color 0.3s ease;
 }
 
 .volume-control:hover,
 .volume-control.is-active {
   opacity: 1;
+  background: rgba(0, 0, 0, 0.6);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 .volume-icon {
   font-size: 14px;
-  opacity: 0.6;
+  color: var(--active-color);
+  transition: color 0.4s ease;
+  filter: drop-shadow(0 0 5px var(--active-color));
 }
 
 /* Custom Range Styling */
@@ -501,6 +505,7 @@ html, body {
   height: 3px;
   background: linear-gradient(to right, var(--active-color) 0%, var(--active-color) var(--volume-percent, 100%), rgba(255, 255, 255, 0.1) var(--volume-percent, 100%));
   border-radius: 2px;
+  transition: background 0.4s ease;
 }
 
 #volume-slider::-webkit-slider-thumb {
@@ -508,16 +513,16 @@ html, body {
   appearance: none;
   width: 12px;
   height: 12px;
-  background: var(--text-primary);
+  background: var(--active-color);
   border-radius: 50%;
   margin-top: -4.5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  transition: transform 0.2s ease, background 0.2s ease;
+  box-shadow: 0 0 10px var(--active-color);
+  transition: transform 0.2s ease, background 0.4s ease, box-shadow 0.4s ease;
 }
 
 #volume-slider:hover::-webkit-slider-thumb {
   transform: scale(1.2);
-  background: var(--active-color);
+  box-shadow: 0 0 15px var(--active-color);
 }
 
 #volume-slider::-moz-range-track {
@@ -531,21 +536,22 @@ html, body {
   background: var(--active-color);
   height: 3px;
   border-radius: 2px;
+  transition: background 0.4s ease;
 }
 
 #volume-slider::-moz-range-thumb {
   width: 12px;
   height: 12px;
-  background: var(--text-primary);
+  background: var(--active-color);
   border-radius: 50%;
   border: none;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  transition: transform 0.2s ease, background 0.2s ease;
+  box-shadow: 0 0 10px var(--active-color);
+  transition: transform 0.2s ease, background 0.4s ease, box-shadow 0.4s ease;
 }
 
 #volume-slider:hover::-moz-range-thumb {
   transform: scale(1.2);
-  background: var(--active-color);
+  box-shadow: 0 0 15px var(--active-color);
 }
 
 /* ── Keyframes ─────────────────────────────────────────────── */
