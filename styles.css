@@ -40,7 +40,8 @@
   color: var(--text-primary);
 }
 
-html, body {
+html,
+body {
   height: 100%;
   overflow: hidden;
   background: var(--bg-primary);
@@ -159,13 +160,27 @@ html, body {
 }
 
 @keyframes textPulse {
-  0%, 100% { opacity: 0.5; }
-  50% { opacity: 1; }
+
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+
+  50% {
+    opacity: 1;
+  }
 }
 
 @keyframes pulseRing {
-  0% { transform: translateX(-50%) scale(0.8); opacity: 1; }
-  100% { transform: translateX(-50%) scale(2); opacity: 0; }
+  0% {
+    transform: translateX(-50%) scale(0.8);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateX(-50%) scale(2);
+    opacity: 0;
+  }
 }
 
 /* ── Station Wheel (HUD) ──────────────────────────────────── */
@@ -409,21 +424,13 @@ html, body {
 }
 
 .station-list-item.is-active {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.15);
-  transform: translateX(8px);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.1);
 }
 
 .sl-icon {
   font-size: 20px;
   flex-shrink: 0;
-  transition: transform 0.3s ease, filter 0.3s ease;
-}
-
-.station-list-item.is-active .sl-icon {
-  transform: scale(1.15);
-  filter: drop-shadow(0 0 8px var(--station-color));
 }
 
 .sl-info {
@@ -434,15 +441,13 @@ html, body {
 
 .sl-name {
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--text-primary);
   letter-spacing: 0.3px;
-  transition: color 0.3s ease, text-shadow 0.3s ease;
 }
 
 .station-list-item.is-active .sl-name {
-  color: var(--station-color);
-  text-shadow: 0 0 10px var(--station-color);
+  color: var(--active-color);
 }
 
 .sl-track {
@@ -566,22 +571,53 @@ html, body {
 
 /* ── Keyframes ─────────────────────────────────────────────── */
 @keyframes slideInRight {
-  from { transform: translateX(100px); opacity: 0; }
-  to   { transform: translateX(0);     opacity: 1; }
+  from {
+    transform: translateX(100px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 
 @keyframes glowPulse {
-  0%, 100% { box-shadow: 0 0 15px rgba(0, 229, 255, 0.1); }
-  50%      { box-shadow: 0 0 30px rgba(0, 229, 255, 0.25); }
+
+  0%,
+  100% {
+    box-shadow: 0 0 15px rgba(0, 229, 255, 0.1);
+  }
+
+  50% {
+    box-shadow: 0 0 30px rgba(0, 229, 255, 0.25);
+  }
 }
 
 @keyframes staticFlicker {
-  0%   { opacity: 0.03; }
-  20%  { opacity: 0.06; }
-  40%  { opacity: 0.02; }
-  60%  { opacity: 0.08; }
-  80%  { opacity: 0.03; }
-  100% { opacity: 0.05; }
+  0% {
+    opacity: 0.03;
+  }
+
+  20% {
+    opacity: 0.06;
+  }
+
+  40% {
+    opacity: 0.02;
+  }
+
+  60% {
+    opacity: 0.08;
+  }
+
+  80% {
+    opacity: 0.03;
+  }
+
+  100% {
+    opacity: 0.05;
+  }
 }
 
 /* ── Responsive ────────────────────────────────────────────── */

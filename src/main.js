@@ -187,7 +187,6 @@ function buildStationList() {
     const item = document.createElement('div');
     item.className = 'station-list-item';
     item.dataset.index = i;
-    item.style.setProperty('--station-color', station.color);
     item.innerHTML = `
       <span class="sl-icon">${station.icon}</span>
       <div class="sl-info">
