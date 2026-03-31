@@ -201,17 +201,9 @@ body {
   opacity: 1;
 }
 
-.wheel-center-dot {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 10px;
-  height: 10px;
-  background: var(--text-primary);
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
-  z-index: 2;
+/* Hide cursor utility */
+html.hide-cursor {
+  cursor: none !important;
 }
 
 .wheel-ring {
@@ -456,6 +448,109 @@ body {
   font-weight: 400;
 }
 
+/* ── Downloads Menu (Upper Right) ───────────────────────────── */
+.download-container {
+  position: fixed;
+  top: 32px;
+  right: 32px;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.download-trigger {
+  display: flex;
+  align-items: center;
+  padding: 10px 24px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border-radius: 20px;
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.download-trigger:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-primary);
+  transform: translateY(-2px);
+}
+
+.download-container.is-open .download-trigger {
+  border-color: var(--active-color);
+  color: var(--active-color);
+  box-shadow: 0 0 20px rgba(0, 229, 255, 0.15);
+}
+
+.dl-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 260px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+
+.download-container.is-open .dl-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: all;
+}
+
+.dl-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  border-radius: 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.dl-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateX(-4px);
+}
+
+.dl-icon {
+  font-size: 24px;
+}
+
+.dl-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.dl-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.dl-desc {
+  font-size: 10px;
+  color: var(--text-secondary);
+}
+
 /* ── Controls Hint & Volume ────────────────────────────────── */
 .controls-hint {
   position: fixed;
@@ -660,6 +755,7 @@ body {
     width: calc(100vw - 32px);
     left: 16px;
     right: auto;
+    bottom: 20px;
   }
 
   .now-playing.is-visible {

@@ -5,10 +5,17 @@
  */
 
 import { getStationCount } from './radioEngine.js';
+import { toggleMute } from './audioTransition.js';
 
 let onChangeCallback = null;
 let scrollThrottleTimer = null;
 const SCROLL_THROTTLE_MS = 250;
+
+// Cursor hide state
+let mouseIdleTimer = null;
+const IDLE_TIME_MS = 3000;
+let lastX = 0;
+let lastY = 0;
 
 // Circular drag state
 let isDragging = false;
@@ -41,6 +48,12 @@ export function initInput(callback, dialEl) {
   window.addEventListener('touchmove', handleTouchMove, { passive: false });
   window.addEventListener('touchend', handleDragEnd);
 
+  // Mouse idle for cursor hiding
+  window.addEventListener('mousemove', resetMouseIdle);
+  window.addEventListener('mousedown', resetMouseIdle);
+  window.addEventListener('wheel', resetMouseIdle);
+  document.addEventListener('fullscreenchange', resetMouseIdle);
+
   // Media Session API
   if ('mediaSession' in navigator) {
     navigator.mediaSession.setActionHandler('nexttrack', () => {
@@ -66,7 +79,20 @@ function emitChange(direction) {
  * Handle keyboard input.
  */
 function handleKeydown(e) {
+  // Ignore if typing in an input or textarea
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
   switch (e.key) {
+    case 'f':
+    case 'F':
+      e.preventDefault();
+      toggleFullscreen();
+      break;
+    case 'm':
+    case 'M':
+      e.preventDefault();
+      toggleMute();
+      break;
     case 'ArrowRight':
     case 'ArrowUp':
       e.preventDefault();
@@ -88,6 +114,41 @@ function handleKeydown(e) {
         }
       }
       break;
+  }
+}
+
+/**
+ * Cursor & Fullscreen Helpers
+ */
+function resetMouseIdle(e) {
+  // 15px Threshold: Fixes touchpad drift jitter
+  if (e && e.type === 'mousemove') {
+    const dx = Math.abs(e.clientX - lastX);
+    const dy = Math.abs(e.clientY - lastY);
+    if (dx < 15 && dy < 15) return;
+    lastX = e.clientX;
+    lastY = e.clientY;
+  }
+
+  document.documentElement.classList.remove('hide-cursor');
+  clearTimeout(mouseIdleTimer);
+
+  if (document.fullscreenElement) {
+    mouseIdleTimer = setTimeout(() => {
+      document.documentElement.classList.add('hide-cursor');
+    }, IDLE_TIME_MS);
+  }
+}
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(err => {
+      console.warn(`Fullscreen request failed: ${err.message}`);
+    });
+  } else {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    }
   }
 }
 
@@ -211,6 +272,12 @@ export function destroyInput() {
     dialElement.removeEventListener('mousedown', handleDragStart);
     dialElement.removeEventListener('touchstart', handleTouchStart);
   }
+
+  window.removeEventListener('mousemove', resetMouseIdle);
+  window.removeEventListener('mousedown', resetMouseIdle);
+  window.removeEventListener('wheel', resetMouseIdle);
+  document.removeEventListener('fullscreenchange', resetMouseIdle);
+  clearTimeout(mouseIdleTimer);
 
   if ('mediaSession' in navigator) {
     navigator.mediaSession.setActionHandler('nexttrack', null);

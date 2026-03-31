@@ -62,12 +62,28 @@ export function setVolume(value) {
     mainGain.gain.cancelScheduledValues(now);
     mainGain.gain.setTargetAtTime(userVolume, now, 0.05);
   }
+  // Notify UI of volume change
+  document.dispatchEvent(new CustomEvent('volume:changed', { detail: { volume: userVolume } }));
 }
 
 /**
  * Get the current volume level.
  */
 export function getVolume() {
+  return userVolume;
+}
+
+/**
+ * Toggle mute state. Returns the new volume.
+ */
+let savedVolume = 1.0;
+export function toggleMute() {
+  if (userVolume > 0.001) {
+    savedVolume = userVolume;
+    setVolume(0.0);
+  } else {
+    setVolume(savedVolume || 1.0);
+  }
   return userVolume;
 }
 

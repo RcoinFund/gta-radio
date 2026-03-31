@@ -32,7 +32,6 @@
 
   <!-- ===== STATION WHEEL (HUD) ===== -->
   <div id="station-wheel" class="station-wheel">
-    <div class="wheel-center-dot"></div>
     <!-- wheel-ring is injected by stationWheel.js -->
   </div>
 
@@ -60,6 +59,29 @@
   <!-- ===== STATION LIST (ambient) ===== -->
   <div id="station-list" class="station-list"></div>
 
+  <!-- ===== DOWNLOADS MENU (Upper Right) ===== -->
+  <div id="download-container" class="download-container">
+    <button id="download-trigger" class="download-trigger" title="Download Apps & Assets">
+      <span class="dl-trigger-label">DOWNLOAD</span>
+    </button>
+    <div id="dl-menu" class="dl-menu">
+      <a href="https://github.com/RcoinFund/gta-radio/releases/download/v1.0.0/Radio-App-1.0.0.exe" class="dl-item" download>
+        <span class="dl-icon">🖥️</span>
+        <div class="dl-info">
+          <span class="dl-name">Radio App v1.0.0</span>
+          <span class="dl-desc">Windows Desktop Version</span>
+        </div>
+      </a>
+      <a href="https://github.com/RcoinFund/gta-radio/releases/download/v1.0.0/Test-Library.zip" class="dl-item" download>
+        <span class="dl-icon">📦</span>
+        <div class="dl-info">
+          <span class="dl-name">Test Library</span>
+          <span class="dl-desc">Example Radio Stations</span>
+        </div>
+      </a>
+    </div>
+  </div>
+
   <!-- ===== VOLUME CONTROL ===== -->
   <div id="volume-control" class="volume-control">
     <span class="volume-icon">🔊</span>
@@ -68,7 +90,7 @@
 
   <!-- ===== CONTROLS HINT ===== -->
   <div class="controls-hint">
-    <span>Scroll · Arrow Keys · 1–5 · Drag Dial</span>
+    <span>Scroll · Arrow Keys · 1–9 · F Fullscreen · M Mute · Drag Dial</span>
   </div>
 
   <script type="module" src="src/main.js"></script>

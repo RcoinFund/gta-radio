@@ -36,6 +36,7 @@ async function boot() {
 
   initWheel(wheelContainer);
   initNowPlaying(nowPlayingCard);
+  initDownloadMenu();
 
   // Update background station list
   buildStationList();
@@ -87,6 +88,13 @@ function initVolumeControl() {
     updateSliderProgress(slider);
   });
 
+  // Listen for volume changes from outside (e.g., mute shortcut)
+  document.addEventListener('volume:changed', (e) => {
+    const newVol = e.detail.volume;
+    slider.value = newVol;
+    updateSliderProgress(slider);
+  });
+
   // Handle active class for opacity while dragging
   slider.addEventListener('mousedown', () => slider.parentElement.classList.add('is-active'));
   slider.addEventListener('mouseup', () => slider.parentElement.classList.remove('is-active'));
@@ -100,6 +108,33 @@ function initVolumeControl() {
 function updateSliderProgress(slider) {
   const percent = slider.value * 100;
   slider.style.setProperty('--volume-percent', `${percent}%`);
+}
+
+/**
+ * Initialize the minimalist download menu.
+ */
+function initDownloadMenu() {
+  const container = document.getElementById('download-container');
+  const trigger = document.getElementById('download-trigger');
+  if (!container || !trigger) return;
+
+  trigger.addEventListener('click', (e) => {
+    e.stopPropagation();
+    container.classList.toggle('is-open');
+  });
+
+  // Close when clicking outside or pressing Escape
+  document.addEventListener('click', (e) => {
+    if (!container.contains(e.target)) {
+      container.classList.remove('is-open');
+    }
+  });
+
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      container.classList.remove('is-open');
+    }
+  });
 }
 
 /**

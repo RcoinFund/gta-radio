@@ -70,7 +70,13 @@ export function showWheel(activeIndex) {
   // Calculate target rotation (rotate ring so active station is at top)
   const count = getStationCount();
   const angleStep = 360 / count;
-  targetRotation = -(activeIndex * angleStep);
+  const rawTarget = -(activeIndex * angleStep);
+
+  // Shortest path rotation logic
+  let diff = (rawTarget - currentRotation) % 360;
+  if (diff > 180) diff -= 360;
+  if (diff < -180) diff += 360;
+  targetRotation = currentRotation + diff;
 
   // Show the wheel
   if (!isVisible) {
